@@ -1,0 +1,105 @@
+import TableContainer from "@material-ui/core/TableContainer";
+import Paper from "@material-ui/core/Paper";
+import Table from "@material-ui/core/Table";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import React, {useEffect, useState} from "react";
+import TableCell from "@material-ui/core/TableCell";
+import TableBody from "@material-ui/core/TableBody";
+import NavigationBar from "./NavigationBar";
+import axios from "axios";
+import {IconButton} from "@material-ui/core";
+import CustomIconButton from "./CustomIconButton";
+import Container from "@material-ui/core/Container";
+
+function createData(name, calories, fat, carbs, protein) {
+    return { name, calories, fat, carbs, protein };
+}
+
+function getTypeById(id, types){
+    const type = types.find(({id: typeId}) => id === typeId);
+    return type || ''
+}
+
+function delete_expense(id, expenses, set_expenses){
+    // eslint-disable-next-line no-restricted-globals
+    let result = confirm("You really want to delete this expense?");
+    if(result) {
+        axios({
+            method: 'delete',
+            url: `http://127.0.0.1:8000/expense/${id}`
+        })
+            .then(function (response) {
+                console.log(response);
+                if (response.status === 204) {
+                    expenses = expenses.filter(expense => expense.id !== id)
+                    set_expenses(expenses)
+                }
+            });
+    }
+}
+
+export default function Expenses() {
+    const [data, set_data] = useState([])
+    const [types, set_types] = useState([])
+
+    useEffect(()=>{
+        axios({
+            method: 'get',
+            url: 'http://127.0.0.1:8000/expense_type'
+        })
+            .then(function (response) {
+                console.log(response.data)
+                set_types(response.data)
+            });
+
+        axios({
+            method: 'get',
+            url: 'http://127.0.0.1:8000/expense'
+        })
+            .then(function (response) {
+                set_data(response.data)
+            });
+    },[])
+
+    return (
+        <Container>
+            <NavigationBar/>
+            <TableContainer component={Paper}>
+                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>ID</TableCell>
+                            <TableCell align="right">Type</TableCell>
+                            <TableCell align="right">Sum</TableCell>
+                            <TableCell align="right">Notes</TableCell>
+                            <TableCell align="right">Date</TableCell>
+                            <TableCell align="right">Action</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {data.map((row) => (
+                            <TableRow
+                                key={row.id}
+                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                            >
+                                <TableCell component="th" scope="row">
+                                    {row.id}
+                                </TableCell>
+                                <TableCell align="right">{getTypeById(row.type, types).title}</TableCell>
+                                <TableCell align="right">{row.sum}</TableCell>
+                                <TableCell align="right">{row.notes}</TableCell>
+                                <TableCell align="right">{row.date}</TableCell>
+                                <TableCell align="right">
+                                    <CustomIconButton to={`expense/edit/${row.id}`}>Edit</CustomIconButton>
+                                    <IconButton onClick={()=>{delete_expense(row.id, data, set_data)}}>Delete</IconButton>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+            <CustomIconButton to={'expense/create'}>Add</CustomIconButton>
+        </Container>
+    );
+}
