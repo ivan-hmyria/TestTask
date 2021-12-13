@@ -1,6 +1,6 @@
 1. How long did you spend on the coding test?
 
-About 14 hours, 4 hours for backend part and the rest for frontend and deploy.
+About 16 hours, 4 hours for backend part and the rest for frontend and deploy.
 
 2. What would you change/add if you had more time?
 
