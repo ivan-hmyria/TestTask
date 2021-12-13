@@ -95,7 +95,7 @@ export default function Analytics() {
         const filter = (startDate ? 'after_date=' + startDate + "&" : "") + (endDate ? 'before_date=' + endDate : "")
         axios({
             method: 'get',
-            url: `http://127.0.0.1:8000/expense/get_groped_expenses?${filter}`
+            url: `https://expense-tracker-deployed.herokuapp.com/expense/get_groped_expenses?${filter}`
         })
             .then(function (response) {
                 console.log(response.data)
@@ -151,7 +151,7 @@ export default function Analytics() {
     useEffect(()=>{
         axios({
             method: 'get',
-            url: 'http://127.0.0.1:8000/expense/get_groped_expenses'
+            url: 'https://expense-tracker-deployed.herokuapp.com/expense/get_groped_expenses'
         })
             .then(function (response) {
                 console.log(response.data)

@@ -27,7 +27,7 @@ export default function ExpenseTypeDetail(props){
     useEffect(()=>{
         axios({
             method: 'get',
-            url: 'http://127.0.0.1:8000/expense_type'
+            url: 'https://expense-tracker-deployed.herokuapp.com/expense_type'
         })
             .then(function (response) {
                 console.log(response.data)
@@ -37,7 +37,7 @@ export default function ExpenseTypeDetail(props){
             if(is_edit){
             axios({
                 method: 'get',
-                url: `http://127.0.0.1:8000/expense_type/${expenseId}/`
+                url: `https://expense-tracker-deployed.herokuapp.com/expense_type/${expenseId}/`
             })
                 .then(function (response) {
                     console.log(response.data)
@@ -56,7 +56,7 @@ export default function ExpenseTypeDetail(props){
     function  createNewExpense(){
         axios({
             method: 'post',
-            url: `http://127.0.0.1:8000/expense_type/`,
+            url: `https://expense-tracker-deployed.herokuapp.com/expense_type/`,
             data:{
                 title: form.title,
                 active: form.active
@@ -70,7 +70,7 @@ export default function ExpenseTypeDetail(props){
     function updateExpense(){
         axios({
             method: 'put',
-            url: `http://127.0.0.1:8000/expense_type/${expenseId}/`,
+            url: `https://expense-tracker-deployed.herokuapp.com/expense_type/${expenseId}/`,
             data:{
                 title: form.title,
                 active: form.active

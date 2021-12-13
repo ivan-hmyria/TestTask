@@ -28,7 +28,7 @@ function delete_expense(id, expenses, set_expenses){
     if(result) {
         axios({
             method: 'delete',
-            url: `http://127.0.0.1:8000/expense/${id}`
+            url: `https://expense-tracker-deployed.herokuapp.com/expense/${id}`
         })
             .then(function (response) {
                 console.log(response);
@@ -47,7 +47,7 @@ export default function Expenses() {
     useEffect(()=>{
         axios({
             method: 'get',
-            url: 'http://127.0.0.1:8000/expense_type'
+            url: 'https://expense-tracker-deployed.herokuapp.com/expense_type'
         })
             .then(function (response) {
                 console.log(response.data)
@@ -56,7 +56,7 @@ export default function Expenses() {
 
         axios({
             method: 'get',
-            url: 'http://127.0.0.1:8000/expense'
+            url: 'https://expense-tracker-deployed.herokuapp.com/expense'
         })
             .then(function (response) {
                 set_data(response.data)
