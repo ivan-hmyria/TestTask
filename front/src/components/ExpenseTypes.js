@@ -8,9 +8,10 @@ import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
 import NavigationBar from "./NavigationBar";
 import axios from "axios";
-import {IconButton} from "@material-ui/core";
+import Button from "@material-ui/core/Button";
 import CustomIconButton from "./CustomIconButton";
 import Container from "@material-ui/core/Container";
+import {useStyles} from "../styles/ExpensesStyle";
 
 function createData(name, calories, fat, carbs, protein) {
     return { name, calories, fat, carbs, protein };
@@ -53,6 +54,8 @@ export default function ExpenseTypes() {
             });
     },[])
 
+    const classes = useStyles()
+
     return (
         <Container>
             <NavigationBar/>
@@ -63,7 +66,7 @@ export default function ExpenseTypes() {
                             <TableCell>ID</TableCell>
                             <TableCell align="right">Title</TableCell>
                             <TableCell align="right">Is Active</TableCell>
-                            <TableCell align="right">Actions</TableCell>
+                            <TableCell align="right"><CustomIconButton className={classes.addButton} to={'expense_type/create/'}>Add</CustomIconButton></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -79,15 +82,14 @@ export default function ExpenseTypes() {
                                 <TableCell align="right"> {row.active ? 'Active' : "Inactive"}</TableCell>
 
                                 <TableCell align="right">
-                                    <CustomIconButton to={`expense_type/edit/${row.id}`}>Edit</CustomIconButton>
-                                    <IconButton onClick={()=>{delete_expense(row.id, data, set_data)}}>Delete</IconButton>
+                                    <CustomIconButton className={classes.button} to={`expense_type/edit/${row.id}`}>Edit</CustomIconButton>
+                                    <Button variant="contained" className={classes.button} onClick={()=>{delete_expense(row.id, data, set_data)}}>Delete</Button>
                                 </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
             </TableContainer>
-            <CustomIconButton to={'expense_type/create/'}>Add</CustomIconButton>
         </Container>
     );
 }

@@ -8,9 +8,10 @@ import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
 import NavigationBar from "./NavigationBar";
 import axios from "axios";
-import {IconButton} from "@material-ui/core";
+import Button from "@material-ui/core/Button";
 import CustomIconButton from "./CustomIconButton";
 import Container from "@material-ui/core/Container";
+import {useStyles} from '../styles/ExpensesStyle';
 
 function createData(name, calories, fat, carbs, protein) {
     return { name, calories, fat, carbs, protein };
@@ -62,19 +63,23 @@ export default function Expenses() {
             });
     },[])
 
+    const classes = useStyles();
     return (
         <Container>
             <NavigationBar/>
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableContainer className={classes.root} component={Paper}>
+                <Table className={classes.table} sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
                         <TableRow>
-                            <TableCell>ID</TableCell>
+                            <TableCell >ID</TableCell>
                             <TableCell align="right">Type</TableCell>
                             <TableCell align="right">Sum</TableCell>
                             <TableCell align="right">Notes</TableCell>
                             <TableCell align="right">Date</TableCell>
-                            <TableCell align="right">Action</TableCell>
+                            <TableCell align="right"><CustomIconButton
+                                variant="contained"
+                                className={classes.addButton}
+                                to={'expense/create'}>Add</CustomIconButton></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -91,15 +96,14 @@ export default function Expenses() {
                                 <TableCell align="right">{row.notes}</TableCell>
                                 <TableCell align="right">{row.date}</TableCell>
                                 <TableCell align="right">
-                                    <CustomIconButton to={`expense/edit/${row.id}`}>Edit</CustomIconButton>
-                                    <IconButton onClick={()=>{delete_expense(row.id, data, set_data)}}>Delete</IconButton>
+                                    <CustomIconButton className={classes.button} to={`expense/edit/${row.id}`}>Edit</CustomIconButton>
+                                    <Button className={classes.button} onClick={()=>{delete_expense(row.id, data, set_data)}}>Delete</Button>
                                 </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
             </TableContainer>
-            <CustomIconButton to={'expense/create'}>Add</CustomIconButton>
         </Container>
     );
 }

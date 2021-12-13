@@ -13,7 +13,7 @@ class Expense(models.Model):
     type = models.ForeignKey(ExpenseType, on_delete=models.CASCADE, related_name="expenses")
     sum = models.FloatField()
     notes = models.CharField(max_length=200, blank=True, null=True)
-    date = models.DateField()
+    date = models.DateField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.type} - {self.sum}"

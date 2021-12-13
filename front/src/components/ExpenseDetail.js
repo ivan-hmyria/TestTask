@@ -9,6 +9,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import {useState} from "react";
 import {func} from "prop-types";
 import axios from "axios";
+import {useStyles} from "../styles/ExpenseDetailStyle";
 
 export default function ExpenseDetail(props){
     const is_edit = props.type === "edit";
@@ -82,64 +83,85 @@ export default function ExpenseDetail(props){
             });
     }
 
+    const classes = useStyles();
+
     const editForm = (<Container>
         <NavigationBar/>
-        <InputLabel id="expense-type-label">Expense Type</InputLabel>
-        <Select
-            id="expense-type-select"
-            value={form.type}
-            label="Expense Type"
-            onChange={event => {handleForm("type", event.target.value)}}
-        >
-            {expenseTypes.map((expenseType) => (
-                <MenuItem value={expenseType.id}>{expenseType.title}</MenuItem>
-            ))}
+        <div className={classes.container_horizontal}>
+            <div></div>
+            <div className={classes.container_vertical}>
+                <div className={classes.select_menu}>
+                    <InputLabel style={{'margin-top': '10px'}} id="expense-type-label">Expense Type</InputLabel>
+                    <Select
+                        id="expense-type-select"
+                        value={form.type}
+                        label="Expense Type"
+                        onChange={event => {handleForm("type", event.target.value)}}
+                    >
+                        {expenseTypes.map((expenseType) => (
+                            <MenuItem value={expenseType.id}>{expenseType.title}</MenuItem>
+                        ))}
 
-        </Select>
-        <TextField
-            onChange={(event)=>handleForm("sum", event.target.value)}
-            helperText="Please enter sum"
-            id="expense_sum"
-            label="Sum"
-            value={form.sum}
-        />
-        <TextField
-            onChange={(event)=>handleForm("notes", event.target.value)}
-            helperText="You can leave here your notes"
-            id="expense_notes"
-            label="Notes"
-            value={form.notes}
-        />
-        <Button onClick={()=> updateExpense()}>Update</Button>
+                    </Select>
+                    </div>
+            <TextField
+                onChange={(event)=>handleForm("sum", event.target.value)}
+                helperText="Please enter sum"
+                id="expense_sum"
+                label="Sum"
+                value={form.sum}
+            />
+            <TextField
+                onChange={(event)=>handleForm("notes", event.target.value)}
+                helperText="You can leave here your notes"
+                id="expense_notes"
+                label="Notes"
+                multiline
+                outlinded
+                value={form.notes}
+            />
+            <Button variant="contained" className={classes.updateButton} onClick={()=> updateExpense()}>Update</Button>
+            </div>
+            <div></div>
+        </div>
     </Container>)
 
     const createForm = (<Container>
         <NavigationBar/>
-            <InputLabel id="expense-type-label">Expense Type</InputLabel>
-            <Select
-                id="expense-type-select"
+        <div className={classes.container_horizontal}>
+            <div></div>
+            <div className={classes.container_vertical}>
+                <div className={classes.select_menu}>
+                    <InputLabel id="expense-type-label">Expense Type</InputLabel>
+                    <Select
+                        id="expense-type-select"
 
-                label="Expense Type"
-                onChange={event => {handleForm("type", event.target.value)}}
-            >
-                {expenseTypes.map((expenseType) => (
-                    <MenuItem value={expenseType.id}>{expenseType.title}</MenuItem>
-                ))}
+                        label="Expense Type"
+                        onChange={event => {handleForm("type", event.target.value)}}
+                    >
+                        {expenseTypes.map((expenseType) => (
+                            <MenuItem value={expenseType.id}>{expenseType.title}</MenuItem>
+                        ))}
 
-            </Select>
-        <TextField
-            onChange={(event)=>handleForm("sum", event.target.value)}
-            helperText="Please enter sum"
-            id="expense_sum"
-            label="Sum"
-        />
-        <TextField
-            onChange={(event)=>handleForm("notes", event.target.value)}
-            helperText="You can leave here your notes"
-            id="expense_notes"
-            label="Notes"
-        />
-        <Button onClick={()=> createNewExpense()}>Create</Button>
+                    </Select>
+                </div>
+                <TextField
+                    onChange={(event)=>handleForm("sum", event.target.value)}
+                    helperText="Please enter sum"
+                    id="expense_sum"
+                    label="Sum"
+                />
+                <TextField
+                    onChange={(event)=>handleForm("notes", event.target.value)}
+                    helperText="You can leave here your notes"
+                    id="expense_notes"
+                    multiline
+                    label="Notes"
+                />
+                <Button variant="contained" className={classes.updateButton} onClick={()=> createNewExpense()}>Create</Button>
+            </div>
+            <div></div>
+        </div>
     </Container>)
 
     return (<div>

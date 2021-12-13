@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+  front:
+    build:
+      context: .
+      dockerfile: front/Dockerfile
+    volumes:
+      - .:/code
+    ports:
+      - "3000:3000"

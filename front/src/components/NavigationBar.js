@@ -51,8 +51,8 @@ export default function NavigationBar() {
                 >
                     <List>
                         {drawerElements.map((element, index) => (
-                            <ListItem button key={index}>
-                                <Link href={element.link} underline="none">
+                            <ListItem style={{'width': "300px"}} button key={index}>
+                                <Link style={{'width': "300px"}} href={element.link} underline="none">
                                     <ListItemText primary={element.text} />
                                 </Link>
                             </ListItem>

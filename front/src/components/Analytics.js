@@ -16,7 +16,7 @@ import NavigationBar from "./NavigationBar";
 import {Container} from "@material-ui/core";
 import {KeyboardDatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
 import MomentUtils from "@date-io/moment";
-
+import {useStyles} from "../styles/AnalyticsStyle";
 import 'date-fns';
 import Button from "@material-ui/core/Button";
 
@@ -39,7 +39,7 @@ export const options = {
         },
         title: {
             display: true,
-            text: 'Chart.js Line Chart',
+            text: '',
         },
     },
 };
@@ -84,10 +84,6 @@ export default function Analytics() {
         console.log(value);
         setFilterDate({ ...filterDate, [key]: value});
     }
-
-    useEffect(()=>{
-        getFilteredData(filterDate);
-    },[filterDate])
 
     function getFilteredData(filterDate){
         const startDate = filterDate.startDate?.format('YYYY-MM-DD')
@@ -163,41 +159,52 @@ export default function Analytics() {
             });
     },[])
 
+    useEffect(()=>{
+        getFilteredData(filterDate);
+    },[filterDate])
+
+    const classes = useStyles();
+
     return (
         <Container>
             <NavigationBar/>
-            <MuiPickersUtilsProvider libInstance={moment} utils={MomentUtils}>
-                <KeyboardDatePicker
-                    disableToolbar
-                    variant="inline"
-                    format="MM/DD/yyyy"
-                    margin="normal"
-                    id="date-picker-inline"
-                    label="Date picker inline"
-                    value={filterDate.startDate}
-                    onChange={(date) => {handleFilterChange('startDate', date)}}
-                    KeyboardButtonProps={{
-                        'aria-label': 'change date',
-                    }}
-                />
-                <KeyboardDatePicker
-                    disableToolbar
-                    variant="inline"
-                    format="MM/DD/yyyy"
-                    margin="normal"
-                    id="date-picker-inline"
-                    label="Date picker inline"
-                    value={filterDate.endDate}
-                    onChange={(date) => {handleFilterChange('endDate', date)}}
-                    KeyboardButtonProps={{
-                        'aria-label': 'change date',
-                    }}
-                />
-                <Button onClick={()=>{setFilterDate({
-                    startDate: null,
-                    endDate: null
-                })}}>Reset filters</Button>
-            </MuiPickersUtilsProvider>
+            <div className={classes.filter_container}>
+                <div></div>
+                <MuiPickersUtilsProvider libInstance={moment} utils={MomentUtils}>
+                    <KeyboardDatePicker
+                        className={classes.date_picker}
+                        disableToolbar
+                        variant="inline"
+                        format="MM/DD/yyyy"
+                        margin="normal"
+                        id="date-picker-inline"
+                        label="Start date"
+                        value={filterDate.startDate}
+                        onChange={(date) => {handleFilterChange('startDate', date)}}
+                        KeyboardButtonProps={{
+                            'aria-label': 'change date',
+                        }}
+                    />
+                    <KeyboardDatePicker
+                        className={classes.date_picker}
+                        disableToolbar
+                        variant="inline"
+                        format="MM/DD/yyyy"
+                        margin="normal"
+                        id="date-picker-inline"
+                        label="End date"
+                        value={filterDate.endDate}
+                        onChange={(date) => {handleFilterChange('endDate', date)}}
+                        KeyboardButtonProps={{
+                            'aria-label': 'change date',
+                        }}
+                    />
+                    <Button color="default" variant="contained" className={classes.reset_button} onClick={()=>{setFilterDate({
+                        startDate: null,
+                        endDate: null
+                    })}}>Reset filters</Button>
+                </MuiPickersUtilsProvider>
+            </div>
             <Line options={options} data={data} />
         </Container>
         );

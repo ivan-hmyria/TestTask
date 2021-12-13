@@ -10,6 +10,8 @@ import {useState} from "react";
 import {func} from "prop-types";
 import axios from "axios";
 import Checkbox from "@material-ui/core/Checkbox";
+import {useStyles} from "../styles/ExpenseDetailStyle";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 export default function ExpenseTypeDetail(props){
     const is_edit = props.type === "edit";
@@ -79,37 +81,62 @@ export default function ExpenseTypeDetail(props){
             });
     }
 
+    const classes = useStyles()
+
     const editForm = (<Container>
         <NavigationBar/>
-        <TextField
-            onChange={(event)=>handleForm("title", event.target.value)}
-            helperText="Expense title"
-            id="expense_title"
-            label="Title"
-            value={form.title}
-        />
-        <Checkbox
-            checked={form.active}
-            onChange={(event)=>{handleForm('active', !form.active)}}
-            inputProps={{ 'aria-label': 'controlled' }}
-        />
-        <Button onClick={()=> updateExpense()}>Update</Button>
+        <div className={classes.container_horizontal}>
+            <div></div>
+            <div className={classes.container_vertical}>
+                <TextField
+                    onChange={(event)=>handleForm("title", event.target.value)}
+                    helperText="Expense title"
+                    id="expense_title"
+                    label="Title"
+                    value={form.title}
+                />
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                    checked={form.active}
+                    color="primary"
+                    onChange={(event)=>{handleForm('active', !form.active)}}
+                    inputProps={{ 'aria-label': 'controlled' }}
+                />}
+                    label="Is Active"
+                />
+
+                <Button variant="contained" className={classes.updateButton} onClick={()=> updateExpense()}>Update</Button>
+            </div>
+            <div></div>
+        </div>
     </Container>)
 
     const createForm = (<Container>
         <NavigationBar/>
+         <div className={classes.container_horizontal}>
+            <div></div>
+            <div className={classes.container_vertical}>
         <TextField
             onChange={(event)=>handleForm("title", event.target.value)}
             helperText="Enter expense title"
             id="expense_type_title"
             label="Title"
         />
+        <FormControlLabel
+                    control={
         <Checkbox
             checked={form.active}
             onChange={(event)=>{handleForm('active', !form.active)}}
             inputProps={{ 'aria-label': 'controlled' }}
-        />
-        <Button onClick={()=> createNewExpense()}>Create</Button>
+        />}
+                    label="Is Active"
+                />
+
+        <Button variant="contained" className={classes.updateButton} onClick={()=> createNewExpense()}>Create</Button>
+            </div>
+             <div></div>
+         </div>
     </Container>)
 
     return (<div>
